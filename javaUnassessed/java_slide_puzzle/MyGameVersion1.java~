@@ -1,0 +1,64 @@
+public class MyGameVersion1 { 
+  
+  public static void main (String[] args) {
+    
+    System.out.println("\nHello and welcome to Slide Puzzle 3000!" + 
+        "\nThe MOST ULTIMATE slide puzzle game known to man!!");
+    System.out.println("\nPlease input your name:");
+    
+    String name = IOUtil.readString();
+ 
+    System.out.println("\nThanks " + name + ". Now please enter the size SlidePuzzle\n"
+    + "you would like to solve (i.e enter 3 for a 3 by 3 puzzle):");
+
+    int size = IOUtil.readInt();
+    SlidePuzzle puzzle = new SlidePuzzle(size);
+    
+    System.out.println("Here is the initial puzzle:");
+    final String initial = puzzle.toString();
+    System.out.println(puzzle);
+       
+    while (true) {
+    String S = IOUtil.readString();
+    if (!(S.equals("s"))) {
+    System.out.println("\n Press (s) to scramble the puzzle");
+    } else {
+    break;
+    } 
+    }
+  
+    puzzle.scramble(15000);
+    
+    System.out.println("\n Right now let the fun begin:"+
+                       "Use the Up, Down, Left and Right" +
+                       "keys to get back to the original . Have fun!");
+
+    int moveCount = 0;
+    
+    loop : do {
+    String newMove = IOUtil.readString();
+    switch (newMove) {
+    case "^[[A": puzzle.moveUp();
+         continue;
+    case "^[[C": puzzle.moveRight();
+         continue;
+    case "^[[B": puzzle.moveDown();
+         continue;
+    case "^[[D": puzzle.moveLeft();
+         continue;
+    }
+    System.out.println("Movecount = " + moveCount);
+    moveCount++;
+    System.out.println(puzzle);
+    } while (!(puzzle.isGameOver(initial)));
+    
+   System.out.println("You completed the Game in " + moveCount + " moves!");
+   System.out.println("Well Done :)");
+   }
+
+//   public static boolean isGameOver() {
+//   return initial.equals(puzzle.toString());
+//   }
+  
+}
+    
