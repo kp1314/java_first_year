@@ -1,0 +1,89 @@
+public class SimpleBlackJackLibrary {
+
+  public static void main (String[] args) {
+  
+  int goldStack = 1000;
+  
+  while ( goldStack > 0 ) { 
+  System.out.println("You have " + goldStack + " gold.");
+
+  int a = getWager(goldStack);
+    if (a != 0) { 
+        int p = playerScore();
+        int d = dealerScore();
+        goldStack = calculateNextGold(goldStack, a, p, d);
+    } else {
+        return;
+    }
+  }
+  System.out.println("You lost the game, now go and be poor.");
+  }
+
+  private static int calculateNextGold(int gold, int wager, 
+      int playerScore, int dealerScore) {
+  assert wager <= gold: "You can't wager more than you have!";
+  while (dealerScore <= 21) {
+    if  (playerScore <= 21) {
+      if (playerScore < dealerScore) {
+        System.out.println("You lost, the dealer got " + dealerScore + 
+            " and you got " + playerScore);
+        return gold - wager;
+      } else if (playerScore == dealerScore) {
+          System.out.println("You drew, you and the dealer got " + dealerScore);
+          return gold; 
+      } else {
+          System.out.println("You've won, the dealer got " + dealerScore +
+              " and you got " + playerScore);
+          return gold + wager;
+      }
+    }
+    System.out.println("You lost");
+    return gold - wager;
+  }
+  System.out.println("You Won");
+  return gold + wager; 
+  }
+
+  private static int getWager(int gold) {
+    System.out.println("How much do you wish to wager? (Enter 0 to quit)");
+    int wager = IOUtil.readInt();
+      while (wager < 0 || wager > gold) {
+        System.out.println("I'm sorry, that wasn't a valid amount. " +
+            "Please try again.");
+        wager = IOUtil.readInt();
+      } return wager;
+  }
+
+  private static int rollDie() {
+    int a = 0;
+    do { 
+      a = (int)(Math.random()*7 + 1);
+    } while (a > 6);
+
+    return a;
+  }
+  
+  private static int dealerScore() {
+    int scoreHolder = 0;
+
+    while (scoreHolder < 17) {
+      scoreHolder += rollDie();
+    }
+    return scoreHolder;
+  }
+
+  private static int playerScore() {
+    int scoreHolder = rollDie();
+    do { 
+      System.out.println("Your total is " + scoreHolder + ".");
+      System.out.println("Enter 0 to Stick, or anything else to hit");
+      int n = IOUtil.readInt();
+      if (n != 0) {
+        scoreHolder += rollDie();
+      } else { 
+          break;
+      }
+    } while (scoreHolder < 21); 
+    return scoreHolder;
+  }    
+}          
